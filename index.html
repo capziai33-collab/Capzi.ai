@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Capzi AI</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: Arial; background: #0f2027; color: white; text-align: center; padding: 20px; }
+    textarea { width: 100%; max-width: 500px; height: 100px; }
+    button { padding: 10px 20px; margin-top: 10px; }
+    .output { margin-top: 20px; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Capzi AI</h1>
+  <textarea id="prompt" placeholder="Type your request here..."></textarea><br>
+  <button onclick="sendPrompt()">Generate</button>
+  <div id="output" class="output"></div>
+
+  <script>
+    async function sendPrompt() {
+      const prompt = document.getElementById('prompt').value;
+      document.getElementById('output').innerText = "Generating...";
+      const res = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt })
+      });
+      const data = await res.json();
+      document.getElementById('output').innerText = data.text || data.error;
+    }
+  </script>
+</body>
+</html>
